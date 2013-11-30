@@ -24,6 +24,7 @@ public class Main extends PApplet {
 			for (int j = 0; j < row; j++) {
 				currentCells[i][j] = new Cell(this, i * W_CELL, j * W_CELL,
 						W_CELL);
+				nextCells[i][j] = new Cell(this, i * W_CELL, j * W_CELL, W_CELL);
 			}
 		}
 	}
