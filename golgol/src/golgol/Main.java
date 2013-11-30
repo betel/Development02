@@ -26,7 +26,7 @@ public class Main extends PApplet {
 		}
 	}
 
-	// 描画部分
+	// ループ部分
 	public void draw() {
 		for (int i = 0; i < col; i++) {
 			for (int j = 0; j < row; j++) {
@@ -57,6 +57,11 @@ public class Main extends PApplet {
 		}
 	}
 
+	// 描画部分
+	void drawField() {
+
+	}
+
 	// セルのクリア
 	void clearCell() {
 		for (int i = 0; i < col; i++) {
@@ -64,5 +69,21 @@ public class Main extends PApplet {
 				cells[i][j].setBool(false);
 			}
 		}
+	}
+
+	// ロジック部分
+	public void judge(int i, int j) {
+		boolean life = cells[i][j].getBool();
+		if (i < col - 1 && j < row - 1) {
+			if (life) {
+				setBoolAt(i + 1, j, true);
+				setBoolAt(i, j + 1, true);
+			}
+		}
+	}
+
+	// 生死の設定を見やすくするためだけのメソッド
+	private void setBoolAt(int a, int b, boolean bool) {
+		cells[a][b].setBool(bool);
 	}
 }
