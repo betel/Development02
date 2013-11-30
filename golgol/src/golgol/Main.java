@@ -9,7 +9,7 @@ public class Main extends PApplet {
 	static final int H_WINDOW = 400;
 	static final int W_CELL = 20; // セルのサイズ
 
-	Cell[][] cells;
+	Cell[][] currentCells, nextCells;
 
 	int col, row;
 
@@ -18,16 +18,20 @@ public class Main extends PApplet {
 		size(W_WINDOW, H_WINDOW); // ウィンドウサイズを指定
 		col = W_WINDOW / W_CELL; // ウィンドウに収まる分だけ配列を用意
 		row = H_WINDOW / W_CELL;
-		cells = new Cell[col][row];
+		currentCells = new Cell[col][row];
+		nextCells = new Cell[col][row];
 		for (int i = 0; i < col; i++) {
 			for (int j = 0; j < row; j++) {
-				cells[i][j] = new Cell(this, i * W_CELL, j * W_CELL, W_CELL);
+				currentCells[i][j] = new Cell(this, i * W_CELL, j * W_CELL,
+						W_CELL);
 			}
 		}
 	}
 
 	// ループ部分
 	public void draw() {
+		nextGeneration();
+		updateCells();
 		drawField();
 	}
 
@@ -35,7 +39,7 @@ public class Main extends PApplet {
 	public void mouseClicked() {
 		int locX = mouseX / W_CELL;
 		int locY = mouseY / W_CELL;
-		Cell theCell = cells[locX][locY]; // マウスの位置から特定されたセル
+		Cell theCell = currentCells[locX][locY]; // マウスの位置から特定されたセル
 		boolean life = theCell.getBool(); // セルの生死判定を得る
 
 		// 生死の切り替え
@@ -57,34 +61,73 @@ public class Main extends PApplet {
 	void clearCell() {
 		for (int i = 0; i < col; i++) {
 			for (int j = 0; j < row; j++) {
-				cells[i][j].setBool(false);
+				currentCells[i][j].setBool(false);
 			}
 		}
 	}
 
-	// 条件判定して描画する部分
+	// 全てのセルを描画する
 	void drawField() {
 		for (int i = 0; i < col; i++) {
 			for (int j = 0; j < row; j++) {
-				judge(i, j);
-				cells[i][j].drawCell();
+				currentCells[i][j].drawCell();
 			}
 		}
 	}
 
-	// ロジック部分
-	void judge(int i, int j) {
-		boolean life = cells[i][j].getBool();
-		if (i < col - 1 && j < row - 1) {
-			if (life) {
-				setBoolAt(i + 1, j, true);
-				setBoolAt(i, j + 1, true);
+	// 次世代の内容を現在のセルにコピー
+	void updateCells() {
+		for (int i = 0; i < col; i++) {
+			for (int j = 0; j < row; j++) {
+				currentCells[i][j] = nextCells[i][j];
 			}
 		}
 	}
 
-	// 生死の設定を見やすくするためだけのメソッド
-	void setBoolAt(int a, int b, boolean bool) {
-		cells[a][b].setBool(bool);
+	// ロジック部分(判定するのは外周を除く部分)
+	// ルールに従って次世代を生成して、nextCells()に格納する
+	void nextGeneration() {
+		for (int i = 1; i < col - 1; i++) {
+			for (int j = 1; j < row - 1; j++) {
+				boolean life = currentCells[i][j].getBool();
+				if (!life) { // セルが死んでいる時
+					if (countAliveCell(i, j) == 3) {
+						nextCells[i][j].setBool(true); // セルが生まれる
+					}
+				} else { // セルが生きている時
+					if (countAliveCell(i, j) >= 4) {
+						nextCells[i][j].setBool(false); // 過密により死滅
+					} else if (countAliveCell(i, j) >= 2) {
+						nextCells[i][j].setBool(true); // 生存
+					} else {
+						nextCells[i][j].setBool(false); // 過疎により死滅
+					}
+				}
+			}
+		}
+	}
+
+	// 周囲の生きているセルの数を返す
+	int countAliveCell(int i, int j) {
+		int count = 0;
+
+		if (currentCells[i - 1][j - 1].getBool())
+			count++;
+		if (currentCells[i][j - 1].getBool())
+			count++;
+		if (currentCells[i + 1][j - 1].getBool())
+			count++;
+		if (currentCells[i - 1][j].getBool())
+			count++;
+		if (currentCells[i + 1][j].getBool())
+			count++;
+		if (currentCells[i - 1][j + 1].getBool())
+			count++;
+		if (currentCells[i][j + 1].getBool())
+			count++;
+		if (currentCells[i + 1][j + 1].getBool())
+			count++;
+
+		return count;
 	}
 }
