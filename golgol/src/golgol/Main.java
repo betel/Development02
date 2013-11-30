@@ -48,6 +48,21 @@ public class Main extends PApplet {
 		} else {
 			theCell.setBool(true);
 		}
+	}
 
+	// キーをおした時の動作
+	public void keyPressed() {
+		if (key == 'c') {
+			clearCell();
+		}
+	}
+
+	// セルのクリア
+	void clearCell() {
+		for (int i = 0; i < col; i++) {
+			for (int j = 0; j < row; j++) {
+				cells[i][j].setBool(false);
+			}
+		}
 	}
 }
