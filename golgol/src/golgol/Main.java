@@ -16,6 +16,7 @@ public class Main extends PApplet {
 	// 初めに実行する部分
 	public void setup() {
 		size(W_WINDOW, H_WINDOW); // ウィンドウサイズを指定
+		frameRate(10); // フレームレートの設定
 		col = W_WINDOW / W_CELL; // ウィンドウに収まる分だけ配列を用意
 		row = H_WINDOW / W_CELL;
 		currentCells = new Cell[col][row];
