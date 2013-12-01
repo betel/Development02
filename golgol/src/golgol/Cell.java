@@ -6,6 +6,7 @@ public class Cell {
 	PApplet p;
 
 	final int GREEN;
+	final int GRAY;
 	final int RED; // テスト用に、死んだセルは赤で表現する
 
 	int x, y; // セルの位置
@@ -19,6 +20,7 @@ public class Cell {
 		this.y = y;
 		this.w = w;
 		GREEN = p.color(0, 255, 0);
+		GRAY = p.color(80);
 		RED = p.color(255, 0, 0);
 	}
 
@@ -28,7 +30,7 @@ public class Cell {
 		if (life) { // セルの生死によって色を分ける
 			p.fill(GREEN);
 		} else {
-			p.fill(RED);
+			p.fill(GRAY);
 		}
 
 		p.stroke(0); // グリッド線は黒色

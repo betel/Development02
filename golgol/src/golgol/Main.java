@@ -6,8 +6,8 @@ import processing.core.PApplet;
 public class Main extends PApplet {
 
 	static final int W_WINDOW = 600; // ウィンドウサイズ
-	static final int H_WINDOW = 400;
-	static final int W_CELL = 20; // セルのサイズ
+	static final int H_WINDOW = 450;
+	static final int W_CELL = 15; // セルのサイズ
 	static final int EDIT_MODE = 0; // modeがこの値の時に編集モードにする
 	static final int ANIMATION_MODE = 1;// modeがこの値の時にアニメーションモードにする
 
