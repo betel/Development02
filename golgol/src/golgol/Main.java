@@ -40,7 +40,6 @@ public class Main extends PApplet {
 			nextGeneration();
 			updateCells();
 		}
-
 		drawField();
 	}
 
