@@ -8,10 +8,13 @@ public class Main extends PApplet {
 	static final int W_WINDOW = 600; // ウィンドウサイズ
 	static final int H_WINDOW = 400;
 	static final int W_CELL = 20; // セルのサイズ
+	static final int EDIT_MODE = 0; // modeがこの値の時に編集モードにする
+	static final int ANIMATION_MODE = 1;// modeがこの値の時にアニメーションモードにする
 
 	Cell[][] currentCells, nextCells;
 
-	int col, row;
+	int col, row; // 列、行の数
+	int mode; // モード切替用変数
 
 	// 初めに実行する部分
 	public void setup() {
@@ -28,27 +31,33 @@ public class Main extends PApplet {
 				nextCells[i][j] = new Cell(this, i * W_CELL, j * W_CELL, W_CELL);
 			}
 		}
+		mode = EDIT_MODE;
 	}
 
 	// ループ部分
 	public void draw() {
-		nextGeneration();
-		updateCells();
+		if (mode == ANIMATION_MODE) {
+			nextGeneration();
+			updateCells();
+		}
+
 		drawField();
 	}
 
 	// クリック時のマウスの位置からセルを指定する
 	public void mouseClicked() {
-		int locX = mouseX / W_CELL;
-		int locY = mouseY / W_CELL;
-		Cell theCell = currentCells[locX][locY]; // マウスの位置から特定されたセル
-		boolean life = theCell.getBool(); // セルの生死判定を得る
+		if (mode == EDIT_MODE) {
+			int locX = mouseX / W_CELL;
+			int locY = mouseY / W_CELL;
+			Cell theCell = currentCells[locX][locY]; // マウスの位置から特定されたセル
+			boolean life = theCell.getBool(); // セルの生死判定を得る
 
-		// 生死の切り替え
-		if (life) {
-			theCell.setBool(false);
-		} else {
-			theCell.setBool(true);
+			// 生死の切り替え
+			if (life) {
+				theCell.setBool(false);
+			} else {
+				theCell.setBool(true);
+			}
 		}
 	}
 
@@ -56,6 +65,16 @@ public class Main extends PApplet {
 	public void keyPressed() {
 		if (key == 'c') {
 			clearCell();
+		}
+		if (key == ' ') {
+			if (mode == ANIMATION_MODE) {
+				mode = EDIT_MODE;
+			} else if (mode == EDIT_MODE) {
+				mode = ANIMATION_MODE;
+			}
+		}
+		if (key == 'q') {
+			exit();
 		}
 	}
 
