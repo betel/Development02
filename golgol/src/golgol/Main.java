@@ -6,8 +6,8 @@ import processing.core.PApplet;
 public class Main extends PApplet {
 
 	static final int W_WINDOW = 600; // ウィンドウサイズ
-	static final int H_WINDOW = 400;
-	static final int W_CELL = 20; // セルのサイズ
+	static final int H_WINDOW = 450;
+	static final int W_CELL = 15; // セルのサイズ
 	static final int EDIT_MODE = 0; // modeがこの値の時に編集モードにする
 	static final int ANIMATION_MODE = 1;// modeがこの値の時にアニメーションモードにする
 
@@ -40,7 +40,6 @@ public class Main extends PApplet {
 			nextGeneration();
 			updateCells();
 		}
-
 		drawField();
 	}
 
@@ -83,6 +82,7 @@ public class Main extends PApplet {
 		for (int i = 0; i < col; i++) {
 			for (int j = 0; j < row; j++) {
 				currentCells[i][j].setBool(false);
+				nextCells[i][j].setBool(false);
 			}
 		}
 	}
@@ -100,7 +100,7 @@ public class Main extends PApplet {
 	void updateCells() {
 		for (int i = 0; i < col; i++) {
 			for (int j = 0; j < row; j++) {
-				currentCells[i][j] = nextCells[i][j];
+				currentCells[i][j].setBool(nextCells[i][j].getBool());
 			}
 		}
 	}
@@ -111,14 +111,16 @@ public class Main extends PApplet {
 		for (int i = 1; i < col - 1; i++) {
 			for (int j = 1; j < row - 1; j++) {
 				boolean life = currentCells[i][j].getBool();
+				int count = countAliveCell(i, j);
+
 				if (!life) { // セルが死んでいる時
-					if (countAliveCell(i, j) == 3) {
+					if (count == 3) {
 						nextCells[i][j].setBool(true); // セルが生まれる
 					}
 				} else { // セルが生きている時
-					if (countAliveCell(i, j) >= 4) {
+					if (count >= 4) {
 						nextCells[i][j].setBool(false); // 過密により死滅
-					} else if (countAliveCell(i, j) >= 2) {
+					} else if (count >= 2) {
 						nextCells[i][j].setBool(true); // 生存
 					} else {
 						nextCells[i][j].setBool(false); // 過疎により死滅
