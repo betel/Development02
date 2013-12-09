@@ -100,7 +100,7 @@ public class Main extends PApplet {
 	void updateCells() {
 		for (int i = 0; i < col; i++) {
 			for (int j = 0; j < row; j++) {
-				currentCells[i][j] = nextCells[i][j];
+				currentCells[i][j].setBool(nextCells[i][j].getBool());
 			}
 		}
 	}
