@@ -8,4 +8,4 @@ https://github.com/tasuten/processing-lifegame.git
 
 License
 =============
-GPL
+GPLv3
