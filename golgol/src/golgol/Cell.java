@@ -19,6 +19,7 @@ public class Cell {
 		this.x = x;
 		this.y = y;
 		this.w = w;
+		this.life = false; // 初期状態が死であることをはっきり宣言する
 		GREEN = p.color(0, 255, 0);
 		GRAY = p.color(80);
 		RED = p.color(255, 0, 0);

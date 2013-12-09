@@ -82,6 +82,7 @@ public class Main extends PApplet {
 		for (int i = 0; i < col; i++) {
 			for (int j = 0; j < row; j++) {
 				currentCells[i][j].setBool(false);
+				nextCells[i][j].setBool(false);
 			}
 		}
 	}
@@ -110,14 +111,16 @@ public class Main extends PApplet {
 		for (int i = 1; i < col - 1; i++) {
 			for (int j = 1; j < row - 1; j++) {
 				boolean life = currentCells[i][j].getBool();
+				int count = countAliveCell(i, j);
+
 				if (!life) { // セルが死んでいる時
-					if (countAliveCell(i, j) == 3) {
+					if (count == 3) {
 						nextCells[i][j].setBool(true); // セルが生まれる
 					}
 				} else { // セルが生きている時
-					if (countAliveCell(i, j) >= 4) {
+					if (count >= 4) {
 						nextCells[i][j].setBool(false); // 過密により死滅
-					} else if (countAliveCell(i, j) >= 2) {
+					} else if (count >= 2) {
 						nextCells[i][j].setBool(true); // 生存
 					} else {
 						nextCells[i][j].setBool(false); // 過疎により死滅
